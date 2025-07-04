@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Eliminar Avión</h2>
+<p>¿Estás seguro que querés eliminar el avión <strong>{{ avion.modelo }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">✅ Confirmar</button>
+    <a href="{% url 'lista_aviones' %}">❌ Cancelar</a>
+</form>
+{% endblock %}

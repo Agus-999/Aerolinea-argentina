@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Aerolínea Voladora</title>
+    
 </head>
 <body>
     <header>
         <h1>✈️ Aerolínea Voladora</h1>
     </header>
 
+    <nav>
+        <a href="{% url 'inicio' %}">🏠 Inicio</a>
+        <a href="{% url 'lista_aviones' %}">✈ Aviones</a>
+        
+    </nav>
+
     <main>
-        {% block content %}{% endblock %}
+        {% block contenido %}{% endblock %}
     </main>
 
     <footer>

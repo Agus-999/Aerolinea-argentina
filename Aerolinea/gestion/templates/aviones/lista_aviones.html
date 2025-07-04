@@ -1,0 +1,25 @@
+<!-- gestion/templates/gestion/lista_aviones.html -->
+
+{% extends 'base.html' %}
+
+{% block contenido %}
+<h2>Lista de Aviones</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Modelo</th>
+        <th>Capacidad</th>
+        <th>Filas</th>
+        <th>Columnas</th>
+    </tr>
+    {% for avion in aviones %}
+    <tr>
+        <td>{{ avion.id }}</td>
+        <td>{{ avion.modelo }}</td>
+        <td>{{ avion.capacidad }}</td>
+        <td>{{ avion.filas }}</td>
+        <td>{{ avion.columnas }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
