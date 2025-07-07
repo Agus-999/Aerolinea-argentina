@@ -1,122 +1,79 @@
-🧰 Etapa 3: CRUD de Aviones
-✈️ En esta etapa comenzamos con la gestión de datos reales dentro del sistema, implementando el CRUD completo de Aviones (crear, leer, actualizar y eliminar) usando vistas propias, formularios personalizados y plantillas web.
+🛠️ Etapa 3: Integración inicial de la gestión
 
-🧩 Creación de la app gestion
-- Creamos una nueva app para agrupar todas las gestiones administrativas:
+📁 Creación de la app gestion
 
+- Creamos una nueva app llamada gestion, que se encargará de centralizar la gestión interna del sistema de la aerolínea (vuelos, pasajeros, aviones, etc.):
     python manage.py startapp gestion
 
 🧠 Registro de la app en Django
-- Agregamos 'gestion' a la lista de apps instaladas en settings.py:
-
+- Agregamos 'gestion' al listado de INSTALLED_APPS en el archivo settings.py:
     INSTALLED_APPS = [
         ...
-        'home',
         'gestion',
     ]
 
-🔁 Configuración de rutas
-- En aerolinea_voladora/urls.py, conectamos la app gestion:
-
+🌐 Configuración de rutas
+- En el archivo principal urls.py, enlazamos la app gestion:
+    from django.contrib import admin
     from django.urls import path, include
 
     urlpatterns = [
-        ...
-        path('gestion/', include('gestion.urls')),
+        path('admin/', admin.site.urls),
+        path('gestion/', include('gestion.urls')),  # Ruta hacia la app gestion
     ]
 
-- En gestion/urls.py, definimos las rutas para el CRUD:
-
+- Creamos el archivo gestion/urls.py y definimos una ruta básica:
     from django.urls import path
     from . import views
 
     urlpatterns = [
-        path('aviones/', views.lista_aviones, name='lista_aviones'),
-        path('aviones/agregar/', views.agregar_avion, name='agregar_avion'),
-        path('aviones/editar/<int:id>/', views.editar_avion, name='editar_avion'),
-        path('aviones/eliminar/<int:id>/', views.eliminar_avion, name='eliminar_avion'),
+        path('', views.index, name='index'),
     ]
-🧱 Modelo de Avión
-- Definimos el modelo Avion en gestion/models.py:
 
-    class Avion(models.Model):
-        modelo = models.CharField(max_length=100)
-        capacidad = models.PositiveIntegerField()
-        filas = models.PositiveIntegerField()
-        columnas = models.PositiveIntegerField()
+🖼️ Creación de vista y plantilla inicial
+- En gestion/views.py, definimos una vista inicial de prueba:
+    from django.shortcuts import render
 
-- Registramos el modelo en el admin:
-    
-    admin.site.register(Avion)
-        Aplicamos las migraciones:
-            python manage.py makemigrations gestion
-            python manage.py migrate
+    def index(request):
+        return render(request, 'gestion/index.html')
 
-🧾 Formulario personalizado
-- Creamos el formulario AvionForm en gestion/forms.py para mejorar la experiencia de carga de datos con labels y clases CSS.
+- Creamos la carpeta de plantillas dentro de la app gestion:
+    gestion/
+    └── templates/
+        └── gestion/
+            └── index.html
 
-👁️‍🗨️ Vistas implementadas
-- Creamos 4 vistas en gestion/views.py:
+- En index.html, escribimos un contenido de prueba:
+    {% extends 'base.html' %}
 
-        Vista	       | Descripción
-        ---------------+----------------------------------------
-        lista_aviones  | Muestra todos los aviones cargados
-        agregar_avion  | Permite registrar un nuevo avión
-        editar_avion   | Permite modificar un avión existente
-        eliminar_avion | Confirma y elimina un avión específico
+    {% block contenido %}
+    <h1>Bienvenido a la gestión de la Aerolínea</h1>
+    {% endblock %}
 
-🖼️ Templates utilizados
-- Carpeta: gestion/templates/aviones/
-
-        Archivo	        | Descripción
-        ----------------+--------------------------------------
-        lista.html	    | Lista de aviones con botones CRUD
-        formulario.html	| Formulario para agregar o editar
-        eliminar.html	| Página de confirmación para eliminar
-
-🌐 Navegación general del sitio
-- Agregamos un menú de navegación dentro de base.html para poder acceder fácilmente a:
-
-        🏠 Inicio
-
-        ✈ Aviones
-
-✅ Verificación del funcionamiento
-- Ejecutamos el servidor y comprobamos que:
+✅ Verificación
+- Iniciamos el servidor para comprobar que la app gestion está conectada correctamente:
     python manage.py runserver
-    
-    En http://127.0.0.1:8000/gestion/aviones/ se pueden:
 
-       - Ver los aviones
+- Y accedimos a: http://localhost:8000/gestion/
 
-       - Agregar nuevos
-
-       - Editar o eliminar desde la tabla
-
-🗂️ Estructura del proyecto actual
-    aerolinea_voladora/
-    ├── aerolinea_voladora/
+🗂️ Estructura actual del proyecto
+    aerolinea-argentina/
+    ├── Aerolinea/
+    │   ├── __init__.py
     │   ├── settings.py
     │   ├── urls.py
     │   └── ...
-    ├── home/
-    │   ├── templates/
-    │   │   └── base.html
-    │   └── ...
     ├── gestion/
-    │   ├── forms.py
-    │   ├── models.py
-    │   ├── urls.py
-    │   ├── views.py
     │   ├── templates/
     │   │   └── gestion/
-    │   │       └── aviones/
-    │   │           ├── lista.html
-    │   │           ├── formulario.html
-    │   │           └── eliminar.html
+    │   │       └── index.html
+    │   ├── views.py
+    │   ├── urls.py
+    │   └── ...
+    ├── home/
     │   └── ...
     ├── manage.py
-    └── venv/
+    └── ...
 
 ✍️ Autor
 - Agustín Alejandro Fasano
