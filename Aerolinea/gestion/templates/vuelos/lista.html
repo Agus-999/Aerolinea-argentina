@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>🛫 Lista de Vuelos - Aerolínea Argentina</h2>
+
+<a href="{% url 'agregar_vuelo' %}">➕ Agregar nuevo vuelo</a>
+
+<table border="1">
+    <tr>
+        <th>Avión</th>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Salida</th>
+        <th>Llegada</th>
+        <th>Duración</th>
+        <th>Estado</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+    </tr>
+    {% for vuelo in vuelos %}
+    <tr>
+        <td>{{ vuelo.avion }}</td>
+        <td>{{ vuelo.origen }}</td>
+        <td>{{ vuelo.destino }}</td>
+        <td>{{ vuelo.fecha_salida }}</td>
+        <td>{{ vuelo.fecha_llegada }}</td>
+        <td>{{ vuelo.duracion }}</td>
+        <td>{{ vuelo.estado }}</td>
+        <td>{{ vuelo.precio_base }}</td>
+        <td>
+            <a href="{% url 'editar_vuelo' vuelo.id %}">✏️ Editar</a> |
+            <a href="{% url 'eliminar_vuelo' vuelo.id %}">🗑️ Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
