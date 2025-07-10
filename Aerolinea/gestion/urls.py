@@ -13,4 +13,10 @@ urlpatterns = [
     path('vuelos/agregar/', views.agregar_vuelo, name='agregar_vuelo'),
     path('vuelos/editar/<int:id>/', views.editar_vuelo, name='editar_vuelo'),
     path('vuelos/eliminar/<int:id>/', views.eliminar_vuelo, name='eliminar_vuelo'),
+
+    #* PASAJEROS
+    path('pasajeros/', views.lista_pasajeros, name='lista_pasajeros'),
+    path('pasajeros/agregar/', views.agregar_pasajero, name='agregar_pasajero'),
+    path('pasajeros/editar/<int:id>/', views.editar_pasajero, name='editar_pasajero'),
+    path('pasajeros/eliminar/<int:id>/', views.eliminar_pasajero, name='eliminar_pasajero'),
 ]

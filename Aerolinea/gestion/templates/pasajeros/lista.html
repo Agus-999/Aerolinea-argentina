@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>🧍 Lista de Pasajeros</h2>
+
+<a href="{% url 'agregar_pasajero' %}">➕ Agregar nuevo pasajero</a>
+
+<table border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Documento</th>
+        <th>Tipo</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Fecha de nacimiento</th>
+        <th>Acciones</th>
+    </tr>
+    {% for pasajero in pasajeros %}
+    <tr>
+        <td>{{ pasajero.nombre }}</td>
+        <td>{{ pasajero.documento }}</td>
+        <td>{{ pasajero.tipo_documento }}</td>
+        <td>{{ pasajero.email }}</td>
+        <td>{{ pasajero.telefono }}</td>
+        <td>{{ pasajero.fecha_nac }}</td>
+        <td>
+            <a href="{% url 'editar_pasajero' pasajero.id %}">✏️ Editar</a> |
+            <a href="{% url 'eliminar_pasajero' pasajero.id %}">🗑️ Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

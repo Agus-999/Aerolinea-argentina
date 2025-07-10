@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>{{ accion }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">💾 Guardar</button>
+    <a href="{% url 'lista_pasajeros' %}">Volver</a>
+</form>
+{% endblock %}

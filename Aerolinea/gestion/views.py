@@ -1,8 +1,8 @@
 # gestion/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Avion, Vuelo
-from .forms import AvionForm, VueloForm
+from .models import Avion, Vuelo, Pasajero
+from .forms import AvionForm, VueloForm, PasajeroForm
 
 #* AVIONES
 
@@ -72,3 +72,36 @@ def eliminar_vuelo(request, id):
         vuelo.delete()
         return redirect('lista_vuelos')
     return render(request, 'vuelos/eliminar.html', {'vuelo': vuelo})
+
+#* PASAJEROS
+def lista_pasajeros(request):
+    pasajeros = Pasajero.objects.all()
+    return render(request, 'pasajeros/lista.html', {'pasajeros': pasajeros})
+
+def agregar_pasajero(request):
+    if request.method == 'POST':
+        form = PasajeroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_pasajeros')
+    else:
+        form = PasajeroForm()
+    return render(request, 'pasajeros/formulario.html', {'form': form, 'accion': 'Agregar Pasajero'})
+
+def editar_pasajero(request, id):
+    pasajero = get_object_or_404(Pasajero, pk=id)
+    if request.method == 'POST':
+        form = PasajeroForm(request.POST, instance=pasajero)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_pasajeros')
+    else:
+        form = PasajeroForm(instance=pasajero)
+    return render(request, 'pasajeros/formulario.html', {'form': form, 'accion': 'Editar Pasajero'})
+
+def eliminar_pasajero(request, id):
+    pasajero = get_object_or_404(Pasajero, pk=id)
+    if request.method == 'POST':
+        pasajero.delete()
+        return redirect('lista_pasajeros')
+    return render(request, 'pasajeros/eliminar.html', {'pasajero': pasajero})

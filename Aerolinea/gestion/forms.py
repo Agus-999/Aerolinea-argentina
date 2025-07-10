@@ -1,7 +1,7 @@
 # gestion/forms.py
 
 from django import forms
-from .models import Avion, Vuelo
+from .models import Avion, Vuelo, Pasajero
 
 class AvionForm(forms.ModelForm):
     class Meta:
@@ -57,4 +57,35 @@ class VueloForm(forms.ModelForm):
             }),
             'duracion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: 2h 15m'}),
             'precio_base': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+class PasajeroForm(forms.ModelForm):
+    TIPO_DOC = [
+        ('DNI', 'DNI'),
+        ('Pasaporte', 'Pasaporte'),
+        ('Otro', 'Otro')
+    ]
+
+    tipo_documento = forms.ChoiceField(
+        choices=TIPO_DOC,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Pasajero
+        fields = ['nombre', 'documento', 'tipo_documento', 'email', 'telefono', 'fecha_nac']
+        labels = {
+            'nombre': 'Nombre completo',
+            'documento': 'Número de documento',
+            'tipo_documento': 'Tipo de documento',
+            'email': 'Correo electrónico',
+            'telefono': 'Teléfono',
+            'fecha_nac': 'Fecha de nacimiento',
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'documento': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_nac': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'DD/MM/AAAA'}),
         }

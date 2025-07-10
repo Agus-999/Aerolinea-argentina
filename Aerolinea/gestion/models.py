@@ -23,3 +23,14 @@ class Vuelo(models.Model):
 
     def __str__(self):
         return f"{self.origen} → {self.destino} ({self.fecha_salida})"
+
+class Pasajero(models.Model):
+    nombre = models.CharField(max_length=100)
+    documento = models.CharField(max_length=50, unique=True)
+    tipo_documento = models.CharField(max_length=30)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=30)
+    fecha_nac = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f"{self.nombre} ({self.documento})"
