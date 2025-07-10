@@ -34,3 +34,13 @@ class Pasajero(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.documento})"
+
+class Asiento(models.Model):
+    avion = models.ForeignKey('gestion.Avion', on_delete=models.CASCADE)  # identificación de aeronave
+    numero = models.CharField(max_length=10)  # número AZ
+    fila = models.PositiveIntegerField()      # fila
+    columna = models.CharField(max_length=5)  # columna AZ
+    estado = models.CharField(max_length=20, default='Disponible')  # estado (ej. Disponible, Ocupado)
+
+    def __str__(self):
+        return f"Asiento {self.numero} ({self.fila}{self.columna}) - {self.estado}"

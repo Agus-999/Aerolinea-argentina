@@ -1,11 +1,10 @@
 # gestion/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Avion, Vuelo, Pasajero
-from .forms import AvionForm, VueloForm, PasajeroForm
+from .models import Avion, Vuelo, Pasajero, Asiento
+from .forms import AvionForm, VueloForm, PasajeroForm, AsientoForm
 
 #* AVIONES
-
 def lista_aviones(request):
     aviones = Avion.objects.all()
     return render(request, 'aviones/lista.html', {'aviones': aviones})
@@ -40,7 +39,6 @@ def eliminar_avion(request, id):
 
 
 #* VUELOS
-
 def lista_vuelos(request):
     vuelos = Vuelo.objects.all()
     return render(request, 'vuelos/lista.html', {'vuelos': vuelos})
@@ -105,3 +103,36 @@ def eliminar_pasajero(request, id):
         pasajero.delete()
         return redirect('lista_pasajeros')
     return render(request, 'pasajeros/eliminar.html', {'pasajero': pasajero})
+
+#* ASIENTOS
+def lista_asientos(request):
+    asientos = Asiento.objects.all()
+    return render(request, 'asientos/lista.html', {'asientos': asientos})
+
+def agregar_asiento(request):
+    if request.method == 'POST':
+        form = AsientoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_asientos')
+    else:
+        form = AsientoForm()
+    return render(request, 'asientos/formulario.html', {'form': form, 'accion': 'Agregar Asiento'})
+
+def editar_asiento(request, id):
+    asiento = get_object_or_404(Asiento, pk=id)
+    if request.method == 'POST':
+        form = AsientoForm(request.POST, instance=asiento)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_asientos')
+    else:
+        form = AsientoForm(instance=asiento)
+    return render(request, 'asientos/formulario.html', {'form': form, 'accion': 'Editar Asiento'})
+
+def eliminar_asiento(request, id):
+    asiento = get_object_or_404(Asiento, pk=id)
+    if request.method == 'POST':
+        asiento.delete()
+        return redirect('lista_asientos')
+    return render(request, 'asientos/eliminar.html', {'asiento': asiento})

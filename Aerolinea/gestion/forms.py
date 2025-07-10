@@ -1,7 +1,7 @@
 # gestion/forms.py
 
 from django import forms
-from .models import Avion, Vuelo, Pasajero
+from .models import Avion, Vuelo, Pasajero, Asiento
 
 class AvionForm(forms.ModelForm):
     class Meta:
@@ -88,4 +88,33 @@ class PasajeroForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_nac': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'DD/MM/AAAA'}),
+        }
+
+class AsientoForm(forms.ModelForm):
+    ESTADOS = [
+        ('Disponible', 'Disponible'),
+        ('Ocupado', 'Ocupado'),
+        ('Reservado', 'Reservado'),
+    ]
+
+    estado = forms.ChoiceField(
+        choices=ESTADOS,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Asiento
+        fields = ['avion', 'numero', 'fila', 'columna', 'estado']
+        labels = {
+            'avion': 'Avión',
+            'numero': 'Número',
+            'fila': 'Fila',
+            'columna': 'Columna',
+            'estado': 'Estado'
+        }
+        widgets = {
+            'avion': forms.Select(attrs={'class': 'form-control'}),
+            'numero': forms.TextInput(attrs={'class': 'form-control'}),
+            'fila': forms.NumberInput(attrs={'class': 'form-control'}),
+            'columna': forms.TextInput(attrs={'class': 'form-control'}),
         }

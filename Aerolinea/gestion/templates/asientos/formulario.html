@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>{{ accion }} 🪑</h2>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label>✈️ Avión:</label> {{ form.avion }}
+    </div>
+    <div>
+        <label>🔢 Número del asiento:</label> {{ form.numero }}
+    </div>
+    <div>
+        <label>📏 Fila:</label> {{ form.fila }}
+    </div>
+    <div>
+        <label>🔤 Columna:</label> {{ form.columna }}
+    </div>
+    <div>
+        <label>📌 Estado:</label> {{ form.estado }}
+    </div>
+
+    <button type="submit">💾 Guardar</button>
+    <a href="{% url 'lista_asientos' %}">↩️ Volver</a>
+</form>
+{% endblock %}

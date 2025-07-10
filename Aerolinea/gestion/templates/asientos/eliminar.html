@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>❌ Confirmar Eliminación de Asiento</h2>
+<p>¿Estás seguro de eliminar el asiento <strong>{{ asiento.numero }}</strong> (Fila {{ asiento.fila }}, Columna {{ asiento.columna }}) del avión <strong>{{ asiento.avion }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">✅ Eliminar</button>
+    <a href="{% url 'lista_asientos' %}">❌ Cancelar</a>
+</form>
+{% endblock %}

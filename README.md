@@ -1,71 +1,102 @@
-🛠️ Etapa 3/pasajeros: Creación e integración de la app gestión (pasajeros)
+💺 Etapa 3/asientos: CRUD de Asientos
 
-🧩 Creación de la sección gestión de pasajeros
-- Agregamos la funcionalidad dentro de la app gestion del proyecto Django, para manejar todo lo relacionado a los pasajeros.
+🧰 En esta etapa implementamos el CRUD completo de Asientos, permitiendo gestionar todos los asientos de cada avión: creación, edición, eliminación y listado. Esta funcionalidad es clave para luego asignar correctamente asientos a las reservas.
 
-🧠 Registro del modelo en el admin
-- Registramos el modelo Pasajero en el archivo admin.py:
-    from .models import Pasajero
-    admin.site.register(Pasajero)
+🧱 Modelo de Asiento  
+- Definimos el modelo `Asiento` en `vuelos/models.py` con los siguientes campos:
+    class Asiento(models.Model):
+        avion = models.ForeignKey(Avion, on_delete=models.CASCADE)
+        numero = models.CharField(max_length=5)
+        fila = models.PositiveIntegerField()
+        columna = models.CharField(max_length=2)
+        estado = models.CharField(max_length=20, default='Disponible')
 
-🌐 Configuración de rutas
-- En el archivo gestion/urls.py, agregamos las rutas específicas para la gestión de pasajeros:
-    urlpatterns += [
-        path('pasajeros/', views.lista_pasajeros, name='lista_pasajeros'),
-        path('pasajeros/agregar/', views.agregar_pasajero, name='agregar_pasajero'),
-        path('pasajeros/editar/<int:id>/', views.editar_pasajero, name='editar_pasajero'),
-        path('pasajeros/eliminar/<int:id>/', views.eliminar_pasajero, name='eliminar_pasajero'),
-    ]
+- Registramos el modelo en el admin:
+    admin.site.register(Asiento)
 
-🖼️ Creación de vistas y plantillas
-- Definimos las vistas en gestion/views.py:
-    def lista_pasajeros(request): ...
-    def agregar_pasajero(request): ...
-    def editar_pasajero(request, id): ...
-    def eliminar_pasajero(request, id): ...
+- Aplicamos las migraciones:
+    python manage.py makemigrations vuelos
+    python manage.py migrate
 
-- Creamos las plantillas HTML en:
-    gestion/
-    └── templates/
-        └── pasajeros/
-            ├── lista.html
-            ├── formulario.html
-            └── eliminar.html
+🧾 Formulario personalizado
+- Creamos el formulario AsientoForm en gestion/forms.py con estilos y etiquetas amigables:
+    class AsientoForm(forms.ModelForm):
+        ESTADOS = [
+            ('Disponible', 'Disponible'),
+            ('Ocupado', 'Ocupado'),
+            ('Reservado', 'Reservado'),
+        ]
+        estado = forms.ChoiceField(choices=ESTADOS, widget=forms.Select(attrs={'class': 'form-control'}))
 
-- El formulario usa el PasajeroForm definido en forms.py, con campos como:
-    1. nombre
-    2. documento
-    3. tipo_documento (con combo box)
-    4. email
-    5. teléfono
-    6. fecha de nacimiento
+👁️‍🗨️ Vistas implementadas
+- Creamos las vistas del CRUD de Asientos en gestion/views.py:
+
+    Vista	            | Descripción
+    --------------------+------------------------------------------
+    lista_asientos	    | Lista todos los asientos cargados
+    agregar_asiento	    | Formulario para registrar un asiento
+    editar_asiento	    | Modifica un asiento existente
+    eliminar_asiento	| Confirma y elimina un asiento específico
+
+🔁 Configuración de rutas
+- En gestion/urls.py agregamos las siguientes rutas:
+    path('asientos/', views.lista_asientos, name='lista_asientos'),
+    path('asientos/agregar/', views.agregar_asiento, name='agregar_asiento'),
+    path('asientos/editar/<int:id>/', views.editar_asiento, name='editar_asiento'),
+    path('asientos/eliminar/<int:id>/', views.eliminar_asiento, name='eliminar_asiento'),
+
+🖼️ Templates utilizados
+- Carpeta: gestion/templates/asientos/
+
+    Archivo	        | Descripción
+    ----------------+------------------------------------------
+    lista.html	    | Lista de asientos con botones de acción
+    formulario.html	| Formulario para agregar o editar asientos
+    eliminar.html	| Confirmación para eliminar un asiento
+
+🌐 Navegación general del sitio
+- Desde el menú en base.html se puede acceder a:
+    🏠 Inicio
+    ✈ Aviones
+    🛫 Vuelos
+    💺 Asientos
 
 ✅ Verificación del funcionamiento
-- Ejecutamos el servidor para probar:
+- Ejecutamos el servidor:
     python manage.py runserver
 
-- Accedemos a:
-    📍 http://localhost:8000/pasajeros/
-    📍 http://localhost:8000/pasajeros/agregar/
-    📍 http://localhost:8000/pasajeros/editar/1/
+- En http://127.0.0.1:8000/gestion/asientos/ se puede:
 
-🗂️ Estructura actual del proyecto (resumida)
-    aerolinea-argentina/
+    Ver los asientos cargados
+    Agregar nuevos asientos
+    Editar y eliminar los existentes
+
+🗂️ Estructura del proyecto actual
+    aerolinea_voladora/
+    ├── aerolinea_voladora/
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── ...
+    ├── home/
+    │   ├── templates/
+    │   │   └── base.html
+    │   └── ...
     ├── gestion/
-    │   ├── admin.py
     │   ├── forms.py
     │   ├── models.py
     │   ├── urls.py
     │   ├── views.py
-    │   └── templates/
-    │       └── pasajeros/
-    │           ├── lista.html
-    │           ├── formulario.html
-    │           └── eliminar.html
-    ├── Aerolinea/
-    │   └── urls.py
+    │   ├── templates/
+    │   │   └── asientos/
+    │   │       ├── lista.html
+    │   │       ├── formulario.html
+    │   │       └── eliminar.html
+    │   └── ...
+    ├── vuelos/
+    │   ├── models.py
+    │   └── ...
     ├── manage.py
-    └── ...
+    └── venv/
 
 ✍️ Autor
 - Agustín Alejandro Fasano

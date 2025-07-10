@@ -19,4 +19,11 @@ urlpatterns = [
     path('pasajeros/agregar/', views.agregar_pasajero, name='agregar_pasajero'),
     path('pasajeros/editar/<int:id>/', views.editar_pasajero, name='editar_pasajero'),
     path('pasajeros/eliminar/<int:id>/', views.eliminar_pasajero, name='eliminar_pasajero'),
+
+    #* ASIENTOS
+    path('asientos/', views.lista_asientos, name='lista_asientos'),
+    path('asientos/agregar/', views.agregar_asiento, name='agregar_asiento'),
+    path('asientos/editar/<int:id>/', views.editar_asiento, name='editar_asiento'),
+    path('asientos/eliminar/<int:id>/', views.eliminar_asiento, name='eliminar_asiento'),
+
 ]
