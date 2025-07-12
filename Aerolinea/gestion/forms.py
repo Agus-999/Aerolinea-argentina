@@ -1,7 +1,7 @@
 # gestion/forms.py
 
 from django import forms
-from .models import Avion, Vuelo, Pasajero, Asiento
+from .models import Avion, Vuelo, Pasajero, Asiento, Reserva
 
 class AvionForm(forms.ModelForm):
     class Meta:
@@ -117,4 +117,23 @@ class AsientoForm(forms.ModelForm):
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'fila': forms.NumberInput(attrs={'class': 'form-control'}),
             'columna': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class ReservaForm(forms.ModelForm):
+    class Meta:
+        model = Reserva
+        fields = ['vuelo', 'pasajero', 'asiento', 'estado', 'precio']
+        labels = {
+            'vuelo': 'Vuelo',
+            'pasajero': 'Pasajero',
+            'asiento': 'Asiento',
+            'estado': 'Estado de la Reserva',
+            'precio': 'Precio',
+        }
+        widgets = {
+            'vuelo': forms.Select(attrs={'class': 'form-control'}),
+            'pasajero': forms.Select(attrs={'class': 'form-control'}),
+            'asiento': forms.Select(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
         }

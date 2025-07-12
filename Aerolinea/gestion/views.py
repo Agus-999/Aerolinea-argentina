@@ -1,8 +1,8 @@
 # gestion/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Avion, Vuelo, Pasajero, Asiento
-from .forms import AvionForm, VueloForm, PasajeroForm, AsientoForm
+from .models import Avion, Vuelo, Pasajero, Asiento, Reserva
+from .forms import AvionForm, VueloForm, PasajeroForm, AsientoForm, ReservaForm
 
 #* AVIONES
 def lista_aviones(request):
@@ -136,3 +136,40 @@ def eliminar_asiento(request, id):
         asiento.delete()
         return redirect('lista_asientos')
     return render(request, 'asientos/eliminar.html', {'asiento': asiento})
+
+#* RESERVAS
+# Vista para listar todas las reservas
+def lista_reservas(request):
+    reservas = Reserva.objects.all()
+    return render(request, 'reservas/lista.html', {'reservas': reservas})
+
+# Vista para agregar una nueva reserva
+def agregar_reserva(request):
+    if request.method == 'POST':
+        form = ReservaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_reservas')
+    else:
+        form = ReservaForm()
+    return render(request, 'reservas/formulario.html', {'form': form, 'accion': 'Agregar Reserva'})
+
+# Vista para editar una reserva
+def editar_reserva(request, id):
+    reserva = get_object_or_404(Reserva, pk=id)
+    if request.method == 'POST':
+        form = ReservaForm(request.POST, instance=reserva)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_reservas')
+    else:
+        form = ReservaForm(instance=reserva)
+    return render(request, 'reservas/formulario.html', {'form': form, 'accion': 'Editar Reserva'})
+
+# Vista para eliminar una reserva
+def eliminar_reserva(request, id):
+    reserva = get_object_or_404(Reserva, pk=id)
+    if request.method == 'POST':
+        reserva.delete()
+        return redirect('lista_reservas')
+    return render(request, 'reservas/eliminar.html', {'reserva': reserva})

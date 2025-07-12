@@ -44,3 +44,21 @@ class Asiento(models.Model):
 
     def __str__(self):
         return f"Asiento {self.numero} ({self.fila}{self.columna}) - {self.estado}"
+
+class Reserva(models.Model):
+    ESTADOS = [
+        ('Reservado', 'Reservado'),
+        ('Cancelado', 'Cancelado'),
+        ('Confirmado', 'Confirmado'),
+    ]
+
+    vuelo = models.ForeignKey('gestion.Vuelo', on_delete=models.CASCADE)  # Relacionado con Vuelo
+    pasajero = models.ForeignKey('gestion.Pasajero', on_delete=models.CASCADE)  # Relacionado con Pasajero
+    asiento = models.OneToOneField('gestion.Asiento', on_delete=models.CASCADE)  # Relacionado con Asiento
+    estado = models.CharField(max_length=20, choices=ESTADOS)  # Estado de la reserva
+    fecha_reserva = models.DateTimeField(auto_now_add=True)  # Fecha en que se hace la reserva
+    precio = models.DecimalField(max_digits=8, decimal_places=2)  # Precio de la reserva
+    codigo_reserva = models.CharField(max_length=10, unique=True)  # Código único de reserva
+
+    def __str__(self):
+        return f"Reserva {self.codigo_reserva} - {self.pasajero.nombre} - {self.vuelo.origen} → {self.vuelo.destino}"

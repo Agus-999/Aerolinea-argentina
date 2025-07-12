@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<h2>💺 Lista de Reservas</h2>
+
+<a href="{% url 'agregar_reserva' %}">➕ Agregar nueva reserva</a>
+
+<table border="1">
+    <tr>
+        <th>Vuelo</th>
+        <th>Pasajero</th>
+        <th>Asiento</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for reserva in reservas %}
+    <tr>
+        <td>{{ reserva.vuelo }}</td>
+        <td>{{ reserva.pasajero }}</td>
+        <td>{{ reserva.asiento }}</td>
+        <td>{{ reserva.estado }}</td>
+        <td>
+            <a href="{% url 'editar_reserva' reserva.id %}">✏️ Editar</a> |
+            <a href="{% url 'eliminar_reserva' reserva.id %}">🗑️ Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
