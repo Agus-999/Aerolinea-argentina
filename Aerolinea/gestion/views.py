@@ -1,5 +1,8 @@
 # gestion/views.py
 
+
+# Create your views here.
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Avion, Vuelo, Pasajero
 from .forms import AvionForm, VueloForm, PasajeroForm
