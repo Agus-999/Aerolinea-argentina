@@ -1,96 +1,70 @@
-🛠️ Etapa 3/aviones: Creación e integración de la app gestión (aviones)
+🛠️ Etapa 3/pasajeros: Creación e integración de la app gestión (pasajeros)
 
-🧩 Creación de la app gestión de aviones
-- Creamos una nueva app dentro del proyecto Django para manejar todas las funcionalidades relacionadas con la gestión de aviones:
-    python manage.py startapp aviones
+🧩 Creación de la sección gestión de pasajeros
+- Agregamos la funcionalidad dentro de la app gestion del proyecto Django, para manejar todo lo relacionado a los pasajeros.
 
-🧠 Registro de la app en Django
-- Agregamos 'aviones' a la lista de INSTALLED_APPS en el archivo settings.py:
-    INSTALLED_APPS = [
-        ...
-        'aviones',
-    ]
+🧠 Registro del modelo en el admin
+- Registramos el modelo Pasajero en el archivo admin.py:
+    from .models import Pasajero
+    admin.site.register(Pasajero)
 
 🌐 Configuración de rutas
-- En el archivo Aerolinea/urls.py, incluimos las URLs de la app aviones:
-    from django.contrib import admin
-    from django.urls import path, include
-
-    urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('', include('home.urls')),         # Página principal
-        path('aviones/', include('aviones.urls')),  # Nueva sección de aviones
+- En el archivo gestion/urls.py, agregamos las rutas específicas para la gestión de pasajeros:
+    urlpatterns += [
+        path('pasajeros/', views.lista_pasajeros, name='lista_pasajeros'),
+        path('pasajeros/agregar/', views.agregar_pasajero, name='agregar_pasajero'),
+        path('pasajeros/editar/<int:id>/', views.editar_pasajero, name='editar_pasajero'),
+        path('pasajeros/eliminar/<int:id>/', views.eliminar_pasajero, name='eliminar_pasajero'),
     ]
 
-- Creamos el archivo aviones/urls.py con la estructura inicial:
-    from django.urls import path
-    from . import views
+🖼️ Creación de vistas y plantillas
+- Definimos las vistas en gestion/views.py:
+    def lista_pasajeros(request): ...
+    def agregar_pasajero(request): ...
+    def editar_pasajero(request, id): ...
+    def eliminar_pasajero(request, id): ...
 
-    urlpatterns = [
-        # Las rutas de gestión de aviones se agregarán en las subetapas
-    ]
+- Creamos las plantillas HTML en:
+    gestion/
+    └── templates/
+        └── pasajeros/
+            ├── lista.html
+            ├── formulario.html
+            └── eliminar.html
 
-- Definimos una ruta básica en aviones/urls.py:
-    urlpatterns = [
-        path('', views.index, name='index'),
-    ]
+- El formulario usa el PasajeroForm definido en forms.py, con campos como:
+    1. nombre
+    2. documento
+    3. tipo_documento (con combo box)
+    4. email
+    5. teléfono
+    6. fecha de nacimiento
 
 ✅ Verificación del funcionamiento
-- Ejecutamos el servidor y verificamos que la ruta http://127.0.0.1:8000/aviones/ funciona correctamente (aunque aún no hay vistas definidas):
+- Ejecutamos el servidor para probar:
     python manage.py runserver
 
-🖼️ Creación de vista y plantilla inicial
-- En aviones/views.py, definimos una vista inicial de prueba:
-    from django.shortcuts import render
+- Accedemos a:
+    📍 http://localhost:8000/pasajeros/
+    📍 http://localhost:8000/pasajeros/agregar/
+    📍 http://localhost:8000/pasajeros/editar/1/
 
-    def index(request):
-        return render(request, 'aviones/index.html')
-
-- Creamos la carpeta de plantillas dentro de la app aviones:
-    aviones/
-    └── templates/
-        └── aviones/
-            └── index.html
-
-- En index.html, escribimos un contenido de prueba:
-    {% extends 'base.html' %}
-
-    {% block contenido %}
-        <h1>Bienvenido a la gestión de aviones</h1>
-    {% endblock %}
-
-✅ Verificación
-- Iniciamos el servidor para comprobar que la app aviones está conectada correctamente:
-    python manage.py runserver
-
-- Accedemos a: http://localhost:8000/aviones/
-
-🗂️ Estructura actual del proyecto
+🗂️ Estructura actual del proyecto (resumida)
     aerolinea-argentina/
-    ├── Aerolinea/
-    │   ├── __init__.py
-    │   ├── settings.py
-    │   ├── urls.py
-    │   └── wsgi.py
-    ├── aviones/                   ← Nueva app
-    │   ├── __init__.py
+    ├── gestion/
     │   ├── admin.py
-    │   ├── apps.py
+    │   ├── forms.py
     │   ├── models.py
     │   ├── urls.py
     │   ├── views.py
-    │   └── ...
-    ├── aviones/
-    │   ├── templates/
-    │   │   └── aviones/
-    │   │       └── index.html
-    │   ├── views.py
-    │   ├── urls.py
-    │   └── ...
-    ├── home/
-    │   └── ...
+    │   └── templates/
+    │       └── pasajeros/
+    │           ├── lista.html
+    │           ├── formulario.html
+    │           └── eliminar.html
+    ├── Aerolinea/
+    │   └── urls.py
     ├── manage.py
-    └── requirements.txt
     └── ...
 
 ✍️ Autor
