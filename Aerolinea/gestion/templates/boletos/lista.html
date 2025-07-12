@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>🎫 Lista de Boletos</h2>
+
+<a href="{% url 'agregar_boleto' %}">➕ Agregar nuevo boleto</a>
+
+<table border="1">
+    <tr>
+        <th>Reserva</th>
+        <th>Código de Barras</th>
+        <th>Fecha de Emisión</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for boleto in boletos %}
+    <tr>
+        <td>{{ boleto.reserva }}</td>
+        <td>{{ boleto.codigo_barra }}</td>
+        <td>{{ boleto.fecha_emision }}</td>
+        <td>{{ boleto.estado }}</td>
+        <td>
+            <a href="{% url 'editar_boleto' boleto.id %}">✏️ Editar</a> |
+            <a href="{% url 'eliminar_boleto' boleto.id %}">🗑️ Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

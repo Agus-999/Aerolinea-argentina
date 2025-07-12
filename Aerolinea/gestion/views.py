@@ -1,8 +1,8 @@
 # gestion/views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Avion, Vuelo, Pasajero, Asiento, Reserva
-from .forms import AvionForm, VueloForm, PasajeroForm, AsientoForm, ReservaForm
+from .models import Avion, Vuelo, Pasajero, Asiento, Reserva, Boleto
+from .forms import AvionForm, VueloForm, PasajeroForm, AsientoForm, ReservaForm, BoletoForm
 
 #* AVIONES
 def lista_aviones(request):
@@ -173,3 +173,34 @@ def eliminar_reserva(request, id):
         reserva.delete()
         return redirect('lista_reservas')
     return render(request, 'reservas/eliminar.html', {'reserva': reserva})
+
+#* BOLETOS
+# Vista para listar boletos
+def lista_boletos(request):
+    boletos = Boleto.objects.all()
+    return render(request, 'boletos/lista.html', {'boletos': boletos})
+
+# Agregar
+def agregar_boleto(request):
+    form = BoletoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('lista_boletos')
+    return render(request, 'boletos/formulario.html', {'form': form, 'accion': 'Agregar Boleto'})
+
+# Editar
+def editar_boleto(request, id):
+    boleto = get_object_or_404(Boleto, pk=id)
+    form = BoletoForm(request.POST or None, instance=boleto)
+    if form.is_valid():
+        form.save()
+        return redirect('lista_boletos')
+    return render(request, 'boletos/formulario.html', {'form': form, 'accion': 'Editar Boleto'})
+
+# Eliminar
+def eliminar_boleto(request, id):
+    boleto = get_object_or_404(Boleto, pk=id)
+    if request.method == 'POST':
+        boleto.delete()
+        return redirect('lista_boletos')
+    return render(request, 'boletos/eliminar.html', {'boleto': boleto})

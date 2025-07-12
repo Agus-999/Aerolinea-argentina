@@ -1,7 +1,7 @@
 # gestion/forms.py
 
 from django import forms
-from .models import Avion, Vuelo, Pasajero, Asiento, Reserva
+from .models import Avion, Vuelo, Pasajero, Asiento, Reserva, Boleto
 
 class AvionForm(forms.ModelForm):
     class Meta:
@@ -19,6 +19,7 @@ class AvionForm(forms.ModelForm):
             'filas': forms.NumberInput(attrs={'class': 'form-control'}),
             'columnas': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
 
 class VueloForm(forms.ModelForm):
     ESTADOS = [
@@ -136,4 +137,31 @@ class ReservaForm(forms.ModelForm):
             'asiento': forms.Select(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-control'}),
             'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+class BoletoForm(forms.ModelForm):
+    ESTADOS = [
+        ('Válido', 'Válido'),
+        ('Usado', 'Usado'),
+        ('Cancelado', 'Cancelado'),
+    ]
+
+    estado = forms.ChoiceField(choices=ESTADOS, widget=forms.Select(attrs={'class': 'form-control'}))
+    fecha_emision = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        label="Fecha de emisión"
+    )
+    codigo_barra = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ej: BOL123456789'
+        }),
+        label="Código de barras"
+    )
+
+    class Meta:
+        model = Boleto
+        fields = '__all__'
+        widgets = {
+            'reserva': forms.Select(attrs={'class': 'form-control'}),
         }

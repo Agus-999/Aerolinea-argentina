@@ -27,8 +27,14 @@ urlpatterns = [
     path('asientos/eliminar/<int:id>/', views.eliminar_asiento, name='eliminar_asiento'),
 
     #* RESERVAS
-path('reservas/', views.lista_reservas, name='lista_reservas'),
+    path('reservas/', views.lista_reservas, name='lista_reservas'),
     path('reservas/agregar/', views.agregar_reserva, name='agregar_reserva'),
     path('reservas/editar/<int:id>/', views.editar_reserva, name='editar_reserva'),
     path('reservas/eliminar/<int:id>/', views.eliminar_reserva, name='eliminar_reserva'),
+
+    #* BOLETOS
+    path('boletos/', views.lista_boletos, name='lista_boletos'),
+    path('boletos/agregar/', views.agregar_boleto, name='agregar_boleto'),
+    path('boletos/editar/<int:id>/', views.editar_boleto, name='editar_boleto'),
+    path('boletos/eliminar/<int:id>/', views.eliminar_boleto, name='eliminar_boleto'),
 ]

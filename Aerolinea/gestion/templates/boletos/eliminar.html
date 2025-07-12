@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>❌ Eliminar Boleto</h2>
+<p>¿Estás seguro que querés eliminar el boleto <strong>{{ boleto.codigo_barra }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'lista_boletos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
